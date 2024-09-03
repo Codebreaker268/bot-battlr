@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 
 const botTypeClasses = {
   Assault: "icon military",
@@ -9,14 +10,24 @@ const botTypeClasses = {
   Captain: "icon star",
 };
 
-function BotCard({ bot }) {
+function BotCard({ bot ,onAddBot,onRemove,onDischarge,isInArmy}) {
+  const[disabled,setDisabled]=useState(false)
+  function handleAdd(){
+    onAddBot(bot)
+    setDisabled(true)
+  }
+  // function handleDischarge(){
+  //   onDischarge(bot)
+  // }
+
   return (
     <div className="ui column">
       <div
         className="ui card"
         key={bot.id}
-        onClick={() => console.log("add code to connect event listener")}
+        
       >
+        {!isInArmy &&<button onClick={handleAdd} disabled={disabled}>addBot</button > }
         <div className="image">
           <img alt="oh no!" src={bot.avatar_url} />
         </div>
@@ -45,14 +56,13 @@ function BotCard({ bot }) {
           </span>
           <span>
             <div className="ui center aligned segment basic">
-              <button
+              {isInArmy &&<button
                 className="ui mini red button"
-                onClick={() =>
-                  console.log("add code to connect event listener")
-                }
+                onClick={()=>onDischarge(bot)}
               >
                 x
-              </button>
+              </button>}
+              {isInArmy &&<button onClick={()=>onRemove(bot)}>Remove from army</button>}
             </div>
           </span>
         </div>
